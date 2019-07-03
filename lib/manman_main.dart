@@ -1,6 +1,11 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
-import 'Memo.dart';
-import 'Game.dart';
+import 'package:manman_memo/model/weather.dart';
+import 'package:manman_memo/network/http_controller.dart';
+import 'manager/weather_manager.dart';
+import 'memo.dart';
+import 'game.dart';
 
 void main() => runApp(new ManmanMain());
 
@@ -12,7 +17,7 @@ class ManmanMain extends StatelessWidget {
     return MaterialApp(
       title: "满满",
       theme: ThemeData(primarySwatch: Colors.pink),
-      home: MainPage(title: "满满的app"),
+      home: MainPage(title: "贴心老公"),
     );
   }
 }
@@ -29,6 +34,32 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
+  WeatherManager mWeatherManager =  WeatherManager();
+  String weather;
+
+  @override
+  void initState() {
+    super.initState();
+    var map = new Map<String, String>();
+    map["city"] = "上海";
+    map["key"] = "dd1b2fbe2610bb4acb3a7a065697a7c0";
+    HttpController.get("http://apis.juhe.cn/simpleWeather/query", map,
+        callBack: (response) {
+      Weather weatherModel = Weather.fromJson(response);
+      setState(() {
+        weather = mWeatherManager.getFutureWeather( weatherModel.result);
+      });
+      print("jason," + response.toString());
+    }, errorCallBack: (error) {
+      print("jason," + error);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +68,9 @@ class MainPageState extends State<MainPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          Text("天气预报\n$weather"),
           RaisedButton(
-              child: Text("备忘录"),
+              child: Text("老婆的备忘录"),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -46,7 +78,7 @@ class MainPageState extends State<MainPage> {
                 );
               }),
           RaisedButton(
-              child: Text("小游戏"),
+              child: Text("老婆的小游戏"),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -57,4 +89,5 @@ class MainPageState extends State<MainPage> {
       )),
     );
   }
+
 }

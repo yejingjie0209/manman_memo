@@ -9,9 +9,9 @@ class Memo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "备忘录",
+//      title: "备忘录",
       theme: ThemeData(primarySwatch: Colors.pink),
-      home: MemoPage(title: "备忘录"),
+      home: MemoPage(title: "老婆的备忘录"),
     );
   }
 }

@@ -8,7 +8,7 @@ class Game extends StatelessWidget {
     return MaterialApp(
       title: "小游戏",
       theme: ThemeData(primarySwatch: Colors.pink),
-      home: GamePage(title: "满满的小游戏"),
+      home: GamePage(title: "老婆的小游戏（开发中，尽请期待）"),
     );
   }
 }
@@ -42,7 +42,6 @@ class GamePageState extends State<GamePage> {
                 border: Border.all(color: const Color(0xff6d9eeb))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-
             ),
           ),
         ));
