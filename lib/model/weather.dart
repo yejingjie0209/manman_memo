@@ -32,7 +32,7 @@ class Result extends Object with _$ResultSerializerMixin{
   Realtime realtime;
 
   @JsonKey(name: 'future')
-  List<Future> future;
+  List<WeatherFuture> future;
 
   Result(this.city,this.realtime,this.future,);
 
@@ -73,7 +73,7 @@ class Realtime extends Object with _$RealtimeSerializerMixin{
 
 
 @JsonSerializable()
-class Future extends Object with _$FutureSerializerMixin{
+class WeatherFuture extends Object with _$FutureSerializerMixin{
 
   @JsonKey(name: 'date')
   String date;
@@ -90,9 +90,9 @@ class Future extends Object with _$FutureSerializerMixin{
   @JsonKey(name: 'direct')
   String direct;
 
-  Future(this.date,this.temperature,this.weather,this.wid,this.direct,);
+  WeatherFuture(this.date,this.temperature,this.weather,this.wid,this.direct,);
 
-  factory Future.fromJson(Map<String, dynamic> srcJson) => _$FutureFromJson(srcJson);
+  factory WeatherFuture.fromJson(Map<String, dynamic> srcJson) => _$FutureFromJson(srcJson);
 
 }
 

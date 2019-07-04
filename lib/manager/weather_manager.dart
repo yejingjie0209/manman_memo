@@ -1,5 +1,87 @@
 import 'package:manman_memo/model/weather.dart';
 
+enum WeatherTime { TODAY, TOMORROW }
+
+class WeatherManager {
+
+  String getWeather(Result result, WeatherTime time) {
+    switch (time) {
+      case WeatherTime.TODAY:
+        WeatherFuture future = result.future[0];
+        return "今天${future.weather}，${getWidMsg(future.wid)}${getTemperatureMsg(future.temperature, future.wid, time)}";
+        break;
+      case WeatherTime.TOMORROW:
+        WeatherFuture future = result.future[1];
+        return "明天${future.weather}，${getWidMsg(future.wid)}${getTemperatureMsg(future.temperature, future.wid, time)}";
+        break;
+    }
+    return "";
+  }
+
+  String getTemperatureMsg(String temperature, Wid wid, WeatherTime time) {
+    List<String> list = temperature.split("/");
+    StringBuffer sb = new StringBuffer("气温");
+    if (list.length == 1) {
+      sb.write(list[0]);
+    } else {
+      sb.write(list[0] + "~" + list[1]);
+    }
+
+    if (time == WeatherTime.TOMORROW) {
+      var t1 = list[1].replaceAll("℃", "");
+      if (int.parse(t1) >= 32) {
+        //晴天且温度大于
+        sb.write(",天很热！");
+        if (isFineOrloudy(int.parse(wid.day))) {
+          sb.write("出门注意防晒！");
+        }
+      }
+
+      var t0 = list[0].replaceAll("℃", "");
+      if (int.parse(t0) < 0) {
+        sb.write(",天很冷！出门多穿点衣服！");
+      }
+    }
+
+    return sb.toString();
+  }
+
+  String getWidMsg(Wid wid) {
+    StringBuffer sb = new StringBuffer();
+    var day = int.parse(wid.day);
+    var night = int.parse(wid.night);
+    if (isRain(day) || isRain(night)) {
+      //雨
+      sb.write("记得带伞，");
+    }
+
+    if (isSnow(day) || isSnow(night)) {
+      //雪
+      sb.write("想陪你一起看雪，");
+    }
+
+    if ((day == 53 || night == 53)) {
+      //霾
+      sb.write("建议带好口罩出门，");
+    }
+    print("weather=$day");
+    return "${sb.toString()}";
+  }
+
+  bool isRain(int wid) {
+    return (wid >= 3 && wid <= 12) || wid == 19 || (wid >= 21 && wid <= 25);
+  }
+
+  bool isFineOrloudy(int wid) {
+    return wid == 0 || wid == 1;
+  }
+
+  bool isSnow(int wid) {
+    return (wid >= 13 && wid <= 17) || (wid >= 26 && wid <= 28);
+  }
+}
+
+
 //{
 //"reason": "查询成功",
 //"result": [
@@ -138,56 +220,3 @@ import 'package:manman_memo/model/weather.dart';
 //],
 //"error_code": 0
 //}
-enum Time {
-  NOW,
-  TODAY,
-  TOMORROW
-}
-
-class WeatherManager {
-  List<String> getWeather(Result result, Time time) {
-    var list = new List<String>();
-    var t ;
-    switch (time) {
-      case Time.NOW:
-        t = "今天";
-        break;
-      case Time.TODAY:
-        break;
-      case Time.TOMORROW:
-        break;
-    }
-    result.future.forEach((item) {
-      "老婆,今天天气：" + item.weather + "," + item.wid
-    });
-  }
-
-  String getTemperatureMsg(String temperature) {
-    List<String> list = temperature.split("/ 23\/25℃");
-    StringBuffer sb = new StringBuffer("今天气温");
-    if (list.length == 1) {
-      sb.write(list[0] + "℃");
-    } else {
-      sb.write(list[0] + "~" + list[1] + "℃");
-    }
-  }
-
-  String getWidMsg(Wid wid) {
-    StringBuffer sb = new StringBuffer();
-    var weather = int.parse(wid.day);
-    if ((weather >= 3 && weather <= 12) || weather == 19 ||
-        (weather >= 21 && weather <= 25)) {
-      //雨
-      sb.write("记得带伞");
-    }
-
-    if ((weather >= 13 && weather <= 17) || (weather >= 26 && weather <= 28)) {
-      //雪
-    }
-
-    if ((weather == 53)) {
-      //霾
-      sb.write("，建议带好口罩出门");
-    }
-  }
-}

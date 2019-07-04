@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.love.manman_memo">
 
+
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -12,6 +14,9 @@
         android:label="贴心老公"
         android:icon="@mipmap/ic_launcher"
         tools:ignore="GoogleAppIndexingWarning">
+        <!--<service-->
+            <!--android:name="com.mythichelm.localnotifications.services.LocalNotificationsService"-->
+            <!--android:exported="false" />-->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

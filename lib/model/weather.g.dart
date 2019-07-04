@@ -34,14 +34,14 @@ Result _$ResultFromJson(Map<String, dynamic> json) {
           : new Realtime.fromJson(json['realtime'] as Map<String, dynamic>),
       (json['future'] as List)
           ?.map((e) =>
-              e == null ? null : new Future.fromJson(e as Map<String, dynamic>))
+              e == null ? null : new WeatherFuture.fromJson(e as Map<String, dynamic>))
           ?.toList());
 }
 
 abstract class _$ResultSerializerMixin {
   String get city;
   Realtime get realtime;
-  List<Future> get future;
+  List<WeatherFuture> get future;
   Map<String, dynamic> toJson() =>
       <String, dynamic>{'city': city, 'realtime': realtime, 'future': future};
 }
@@ -76,8 +76,8 @@ abstract class _$RealtimeSerializerMixin {
       };
 }
 
-Future _$FutureFromJson(Map<String, dynamic> json) {
-  return new Future(
+WeatherFuture _$FutureFromJson(Map<String, dynamic> json) {
+  return new WeatherFuture(
       json['date'] as String,
       json['temperature'] as String,
       json['weather'] as String,
